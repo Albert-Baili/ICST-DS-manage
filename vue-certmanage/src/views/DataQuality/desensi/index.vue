@@ -378,8 +378,6 @@ export default {
             }
         },
         yangaiSubmit(){
-            console.log(this.yangaiform)
-
             const headerIn = {
                 'name': this.form.name,
                 'origindata': this.form.origindata,
@@ -387,7 +385,7 @@ export default {
                 'x': this.form.x,
                 'y': this.form.y,
             }
-            testtunnel(headerIn).then(response => {
+            sendDesensiTest_yangai(headerIn).then(response => {
                 console.log(response);
                 this.testFlag = false
                 this.message = response.data.message;
