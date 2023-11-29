@@ -368,7 +368,8 @@ export default {
         yangaiRule: '',
         origindata: '',
         x: '',
-        y: ''
+        y: '',
+        tuodata:''
       }
     }
   },
@@ -401,6 +402,7 @@ export default {
     yangaiSubmit() {
       sendDesensiTest_yangai(this.yangaiform).then(response => {
         console.log(response)
+        this.yangaiform.tuodata = response.data.result
       })
         .catch(error => {
           // 处理请求失败的错误信息
