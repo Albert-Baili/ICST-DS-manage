@@ -158,7 +158,7 @@
 
 
 <script>
-import { sendDesensiTest_yangai } from '@/api/tunnel'
+import { sendDesensiTest_yangai } from '@/api/desensiTest'
 
 export default {
     data() {
@@ -378,17 +378,8 @@ export default {
             }
         },
         yangaiSubmit(){
-            const headerIn = {
-                'name': this.form.name,
-                'origindata': this.form.origindata,
-                'yangaiRule': this.form.yangaiRule,
-                'x': this.form.x,
-                'y': this.form.y,
-            }
-            sendDesensiTest_yangai(headerIn).then(response => {
+            sendDesensiTest_yangai(this.yangaiform).then(response => {
                 console.log(response);
-                this.testFlag = false
-                this.message = response.data.message;
             })
                 .catch(error => {
                     // 处理请求失败的错误信息

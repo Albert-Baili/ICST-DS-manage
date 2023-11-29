@@ -137,6 +137,32 @@ def get_all_logs():
     }
     return jsonify(response)
 
+#脱敏测试
+@app.route('/api/sendDesensiTest/yangai', methods=['POST'])
+def handle_yangai_request():
+    # Extract data from request
+    data = request.json
+    print(data)
+    name = data.get('name')
+    origindata = data.get('origindata')
+    yangaiRule = data.get('yangaiRule')
+    x = data.get('x')
+    y = data.get('y')
+
+    # You can process the data here as needed
+    # For example, just echoing the data back
+    response_data = {
+        "message": f"Received: {name}, {origindata}, {yangaiRule}, {x}, {y}"
+    }
+    response = {
+        'code': 20000,
+        'data': response_data
+    }
+    print(response_data)
+
+    # Send back a response
+    return jsonify(response)
+
 if __name__ == '__main__':
     create_database(db_file)
     app.debug = True
