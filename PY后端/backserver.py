@@ -140,19 +140,23 @@ def get_all_logs():
 #脱敏测试
 @app.route('/api/sendDesensiTest/yangai', methods=['POST'])
 def handle_yangai_request():
-    # Extract data from request
     data = request.json
     print(data)
     name = data.get('name')
     origindata = data.get('origindata')
-    yangaiRule = data.get('yangaiRule')
-    x = data.get('x')
-    y = data.get('y')
+    yangaiRule = int(data.get('yangaiRule'))
+    x = int(data.get('x', 0))
+    y = int(data.get('y', 0))
 
-    # You can process the data here as needed
-    # For example, just echoing the data back
+    # 根据脱敏规则处理数据
+    if yangaiRule == 1:
+        # 保留origindata的前x位和后y位
+        desensitized_data = origindata[:x] + origindata[-y:]
+    else:
+        desensitized_data = "暂不支持该规则"
+
     response_data = {
-        "message": f"Received: {name}, {origindata}, {yangaiRule}, {x}, {y}"
+        "result": desensitized_data
     }
     response = {
         'code': 20000,
