@@ -22,6 +22,9 @@ from tunnelTest import test_tunnel,tunnel_send_Info
 #数据库模块
 from sqlManage import create_database,read_certificate_file,query_certificates,query_log,query_tunnel,insert_log
 
+#脱敏测试模块
+from tuominTest.desensitizeYangai import handle_yangai_request
+
 #配置数据库文件
 db_file = 'devicemanage.db'
 
@@ -139,32 +142,9 @@ def get_all_logs():
 
 #脱敏测试
 @app.route('/api/sendDesensiTest/yangai', methods=['POST'])
-def handle_yangai_request():
+def handle_yangai_tuomintest():
     data = request.json
-    print(data)
-    name = data.get('name')
-    origindata = data.get('origindata')
-    yangaiRule = int(data.get('yangaiRule'))
-    x = int(data.get('x', 0))
-    y = int(data.get('y', 0))
-
-    # 根据脱敏规则处理数据
-    if yangaiRule == 1:
-        # 保留origindata的前x位和后y位
-        desensitized_data = origindata[:x] + origindata[-y:]
-    else:
-        desensitized_data = "暂不支持该规则"
-
-    response_data = {
-        "result": desensitized_data
-    }
-    response = {
-        'code': 20000,
-        'data': response_data
-    }
-    print(response_data)
-
-    # Send back a response
+    response = handle_yangai_request(data)
     return jsonify(response)
 
 if __name__ == '__main__':
