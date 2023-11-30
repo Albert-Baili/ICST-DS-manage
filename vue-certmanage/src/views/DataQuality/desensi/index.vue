@@ -162,7 +162,7 @@
 </template>
 
 <script>
-import { sendDesensiTest_yangai } from '@/api/desensiTest'
+import { sendDesensiTest_yangai,sendDesensiTest_hash} from '@/api/desensiTest'
 
 export default {
   data() {

@@ -25,6 +25,7 @@ from sqlManage import create_database,read_certificate_file,query_certificates,q
 
 #脱敏测试模块
 from tuominTest.desensitizeYangai import handle_yangai_request
+from tuominTest.desensitizeHash import handle_Hash_request
 
 #配置数据库文件
 db_file = 'devicemanage.db'
@@ -146,6 +147,12 @@ def get_all_logs():
 def handle_yangai_tuomintest():
     data = request.json
     response = handle_yangai_request(data)
+    return jsonify(response)
+
+@app.route('/api/sendDesensiTest/hash', methods=['POST'])
+def handle_hash_tuomintest():
+    data = request.json
+    response = handle_Hash_request(data)
     return jsonify(response)
 
 if __name__ == '__main__':
