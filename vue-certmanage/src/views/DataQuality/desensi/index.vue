@@ -5,15 +5,8 @@
         <el-col :span="4" style="padding-right: 5%;padding-top:1%">
           <span>ICST数据安全分级分类模板</span>
           <el-divider />
-          <el-tree
-            ref="tree"
-            :data="treedata"
-            show-checkbox
-            default-expand-all
-            node-key="id"
-            highlight-current
-            :props="defaultProps"
-          />
+          <el-tree ref="tree" :data="treedata" show-checkbox default-expand-all node-key="id" highlight-current
+            :props="defaultProps" />
         </el-col>
         <el-col :span="20" style="padding-top:1%">
           <el-row>
@@ -23,8 +16,7 @@
           </el-row>
           <el-table
             :data="identifyTable.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
-            style="width: 100%"
-          >
+            style="width: 100%">
             <el-table-column label="类型名称" prop="identiType" />
             <el-table-column label="敏感等级" prop="securityLevel">
               <template slot-scope="scope">
@@ -38,23 +30,14 @@
             <el-table-column label="具体描述" prop="describe" />
             <el-table-column label="状态">
               <template slot-scope="scope">
-                <el-switch
-                  v-model="scope.row.status"
-                  active-color="#13ce66"
-                  inactive-color="#ff4949"
-                  active-value="1"
-                  inactive-value="0"
-                />
+                <el-switch v-model="scope.row.status" active-color="#13ce66" inactive-color="#ff4949" active-value="1"
+                  inactive-value="0" />
               </template>
             </el-table-column>
             <el-table-column label="操作">
               <template slot-scope="scope">
                 <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                <el-button
-                  size="small"
-                  type="danger"
-                  @click="handleDelete(scope.$index, scope.row)"
-                >删除</el-button>
+                <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
               </template>
             </el-table-column>
             <el-table-column>
@@ -64,15 +47,9 @@
             </el-table-column>
           </el-table>
           <div class="block">
-            <el-pagination
-              :current-page="currentPage"
-              :page-sizes="[10, 20, 30, 40]"
-              :page-size="10"
-              layout="total, sizes, prev, pager, next, jumper"
-              :total="8"
-              @size-change="handleSizeChange"
-              @current-change="handleCurrentChange"
-            />
+            <el-pagination :current-page="currentPage" :page-sizes="[10, 20, 30, 40]" :page-size="10"
+              layout="total, sizes, prev, pager, next, jumper" :total="8" @size-change="handleSizeChange"
+              @current-change="handleCurrentChange" />
           </div>
         </el-col>
       </el-tab-pane>
@@ -80,10 +57,8 @@
         <el-row>
           <el-button type="primary">新建规则</el-button>
         </el-row>
-        <el-table
-          :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
-          style="width: 100%"
-        >
+        <el-table :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
+          style="width: 100%">
           <el-table-column label="规则名称" prop="规则名称" />
           <el-table-column label="适用对象" prop="适用对象" />
           <el-table-column label="脱敏算法" prop="脱敏算法" />
@@ -91,23 +66,14 @@
           <el-table-column label="执行周期" prop="执行周期" />
           <el-table-column label="状态">
             <template slot-scope="scope">
-              <el-switch
-                v-model="scope.row.status"
-                active-color="#13ce66"
-                inactive-color="#ff4949"
-                active-value="1"
-                inactive-value="0"
-              />
+              <el-switch v-model="scope.row.status" active-color="#13ce66" inactive-color="#ff4949" active-value="1"
+                inactive-value="0" />
             </template>
           </el-table-column>
           <el-table-column label="操作">
             <template slot-scope="scope">
               <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-              <el-button
-                size="small"
-                type="danger"
-                @click="handleDelete(scope.$index, scope.row)"
-              >删除</el-button>
+              <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
             </template>
           </el-table-column>
           <el-table-column>
@@ -117,60 +83,77 @@
           </el-table-column>
         </el-table>
         <div class="block">
-          <el-pagination
-            :current-page="currentPage"
-            :page-sizes="[10, 20, 30, 40]"
-            :page-size="10"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="8"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-          />
+          <el-pagination :current-page="currentPage" :page-sizes="[10, 20, 30, 40]" :page-size="10"
+            layout="total, sizes, prev, pager, next, jumper" :total="8" @size-change="handleSizeChange"
+            @current-change="handleCurrentChange" />
         </div>
       </el-tab-pane>
       <el-tab-pane label="脱敏算法测试" name="third">
-        <el-row>
-          <el-button>Hash脱敏</el-button>
-          <el-button>加密脱敏</el-button>
-          <el-button>字符掩盖</el-button>
-          <el-button>截断脱敏</el-button>
-          <el-button>关键字替换</el-button>
-          <el-button>删除脱敏</el-button>
-        </el-row>
-        <el-form ref="form" :model="yangaiform" label-width="80px" style="width:30%;margin-top:3%;margin-left:10%">
-          <el-form-item label="测试名称">
-            <el-input v-model="yangaiform.name" />
-          </el-form-item>
-          <el-form-item label="选择规则">
-            <el-select v-model="yangaiform.yangaiRule" placeholder="请选择遮盖规则">
-              <el-option label="保留前x后y" value="1" />
-              <el-option label="保留自x至y" value="2" />
-              <el-option label="遮盖前x后y" value="3" />
-              <el-option label="遮盖自x至y" value="4" />
-              <el-option label="特殊字符前遮盖" value="5" />
-              <el-option label="特殊字符后遮盖" value="6" />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="掩盖位置">
-            <el-col :span="10"><el-form-item label="x">
-              <el-input v-model="yangaiform.x" />
-            </el-form-item></el-col>
-            <el-col :span="10"><el-form-item label="y">
-              <el-input v-model="yangaiform.y" />
-            </el-form-item></el-col>
+        <el-tabs tab-position="left" style="margin-top:5%">
+          <el-tab-pane label="Hash脱敏">
+            <el-form ref="form" :model="hashform" label-width="80px" style="width:30%;margin-left:8%">
+              <el-form-item label="测试名称">
+                <el-input v-model="hashform.name" />
+              </el-form-item>
+              <el-form-item label="Hash算法">
+                <el-select v-model="hashform.hashRule" placeholder="请选择Hash算法">
+                  <el-option label="SHA256" value="1" />
+                  <el-option label="SHA512" value="2" />
+                  <el-option label="SM3" value="3" />
+                </el-select>
+              </el-form-item>
+              <el-form-item label="原始数据">
+                <el-input v-model="hashform.origindata" type="textarea" rows="3" />
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary" @click="hashSubmit">测试</el-button>
+                <el-button>重置</el-button>
+              </el-form-item>
+              <el-form-item label="脱敏结果">
+                <el-input v-model="hashform.tuodata" type="textarea" rows="3" />
+              </el-form-item>
+            </el-form>
+          </el-tab-pane>
 
-          </el-form-item>
-          <el-form-item label="原始数据">
-            <el-input v-model="yangaiform.origindata" type="textarea" rows="3" />
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="yangaiSubmit">测试</el-button>
-            <el-button>重置</el-button>
-          </el-form-item>
-          <el-form-item label="脱敏结果">
-            <el-input v-model="yangaiform.tuodata" type="textarea" rows="3" />
-          </el-form-item>
-        </el-form>
+          <el-tab-pane label="加密脱敏">加密脱敏</el-tab-pane>
+
+          <el-tab-pane label="字符掩盖">
+            <el-form ref="form" :model="yangaiform" label-width="80px" style="width:30%;margin-left:8%">
+              <el-form-item label="测试名称">
+                <el-input v-model="yangaiform.name" />
+              </el-form-item>
+              <el-form-item label="选择规则">
+                <el-select v-model="yangaiform.yangaiRule" placeholder="请选择遮盖规则">
+                  <el-option label="保留前x后y" value="1" />
+                  <el-option label="保留自x至y" value="2" />
+                  <el-option label="遮盖前x后y" value="3" />
+                  <el-option label="遮盖自x至y" value="4" />
+                </el-select>
+              </el-form-item>
+              <el-form-item label="掩盖位置">
+                <el-col :span="10"><el-form-item label="x">
+                    <el-input v-model="yangaiform.x" />
+                  </el-form-item></el-col>
+                <el-col :span="10"><el-form-item label="y">
+                    <el-input v-model="yangaiform.y" />
+                  </el-form-item></el-col>
+              </el-form-item>
+              <el-form-item label="原始数据">
+                <el-input v-model="yangaiform.origindata" type="textarea" rows="3" />
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary" @click="yangaiSubmit">测试</el-button>
+                <el-button>重置</el-button>
+              </el-form-item>
+              <el-form-item label="脱敏结果">
+                <el-input v-model="yangaiform.tuodata" type="textarea" rows="3" />
+              </el-form-item>
+            </el-form>
+          </el-tab-pane>
+          <el-tab-pane label="截断脱敏">截断脱敏</el-tab-pane>
+          <el-tab-pane label="删除脱敏">删除脱敏</el-tab-pane>
+        </el-tabs>
+
       </el-tab-pane>
 
       <el-tab-pane label="定时任务补偿" name="fourth">定时任务补偿</el-tab-pane>
@@ -363,13 +346,19 @@ export default {
         status: '1'
       }],
       search: '',
+      hashform: {
+        name: '',
+        hashRule: '',
+        origindata: '',
+        tuodata: ''
+      },
       yangaiform: {
         name: '',
         yangaiRule: '',
         origindata: '',
         x: '',
         y: '',
-        tuodata:''
+        tuodata: ''
       }
     }
   },
@@ -405,6 +394,16 @@ export default {
         this.yangaiform.tuodata = response.data.result
       })
         .catch(error => {
+          // 处理请求失败的错误信息
+          console.error(error)
+        })
+    },
+    hashSubmit() {
+      sendDesensiTest_hash(this.hashform).then(response =>{
+        console.log(response)
+        this.hashform.tuodata = response.data.result
+      })
+      .catch(error => {
           // 处理请求失败的错误信息
           console.error(error)
         })

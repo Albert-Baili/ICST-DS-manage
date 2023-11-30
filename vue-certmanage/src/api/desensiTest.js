@@ -8,3 +8,13 @@ import request from '@/utils/request'
       data
     })
   }
+
+
+  export function sendDesensiTest_hash(data) {
+    return request({
+      url: '/api/sendDesensiTest/hash',
+      method: 'post',
+      data
+    })
+  }
+  

@@ -20,7 +20,7 @@
         </el-table-column>
       </el-table>
 
-      <el-pagination :current-page="currentPage" :page-sizes="[2, 10, 20, 30, 40]" :page-size="pageSize"
+      <el-pagination :current-page="currentPage" :page-sizes="[5, 10, 20, 30, 40]" :page-size="pageSize"
         layout="sizes, prev, pager, next" :prev-text="'上一页'" :next-text="'下一页'" @size-change="handleSizeChange"
         @current-change="handlePageChange"> </el-pagination>
     </div>

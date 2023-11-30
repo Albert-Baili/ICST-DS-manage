@@ -1,3 +1,4 @@
+# coding: utf-8
 import io
 import time
 from flask import Flask,jsonify,request,send_file,render_template
@@ -106,7 +107,7 @@ def get_certificate_file(certificate_id):
         return send_file(
             io.BytesIO(certificate_file_content),
             as_attachment=True,
-            attachment_filename=f"certificate_{certificate_id}.pem",
+            attachment_filename=f'certificate_{certificate_id}.pem',
             mimetype='application/x-pem-file'
         )
     else:
