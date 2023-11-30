@@ -81,7 +81,8 @@ def newtunnel(token_payload):
     return test_tunnel(tunnel_name,target_ip,target_port,certfile)
 
 @app.route('/api/tunnel_manage/getalltunnels',methods=['GET'])
-def get_all_tunnels():
+@token_required
+def get_all_tunnels(token_payload):
     tunnels = query_tunnel()
     response = {
         'code': 20000,
@@ -93,7 +94,8 @@ def get_all_tunnels():
 
 
 @app.route('/api/tunnel_manage/sendinfo',methods=['POST'])
-def tunnel_sendInfo():
+@token_required
+def tunnel_sendInfo(token_payload):
     log_message="用户进行隧道通信"
     insert_log(log_message)
     return tunnel_send_Info()
@@ -122,7 +124,8 @@ def get_certificate_file(certificate_id):
         return jsonify(response)
 
 @app.route('/api/certificates/getallcerts', methods=['GET'])
-def get_all_certs():
+@token_required
+def get_all_certs(token_payload):
     certs=query_certificates()
     response = {
         'code': 20000,
@@ -144,13 +147,15 @@ def get_all_logs():
 
 #脱敏测试
 @app.route('/api/sendDesensiTest/yangai', methods=['POST'])
-def handle_yangai_tuomintest():
+@token_required
+def handle_yangai_tuomintest(token_payload):
     data = request.json
     response = handle_yangai_request(data)
     return jsonify(response)
 
 @app.route('/api/sendDesensiTest/hash', methods=['POST'])
-def handle_hash_tuomintest():
+@token_required
+def handle_hash_tuomintest(token_payload):
     data = request.json
     response = handle_Hash_request(data)
     return jsonify(response)

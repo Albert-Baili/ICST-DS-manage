@@ -5,8 +5,15 @@
         <el-col :span="4" style="padding-right: 5%;padding-top:1%">
           <span>ICST数据安全分级分类模板</span>
           <el-divider />
-          <el-tree ref="tree" :data="treedata" show-checkbox default-expand-all node-key="id" highlight-current
-            :props="defaultProps" />
+          <el-tree
+            ref="tree"
+            :data="treedata"
+            show-checkbox
+            default-expand-all
+            node-key="id"
+            highlight-current
+            :props="defaultProps"
+          />
         </el-col>
         <el-col :span="20" style="padding-top:1%">
           <el-row>
@@ -16,7 +23,8 @@
           </el-row>
           <el-table
             :data="identifyTable.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
-            style="width: 100%">
+            style="width: 100%"
+          >
             <el-table-column label="类型名称" prop="identiType" />
             <el-table-column label="敏感等级" prop="securityLevel">
               <template slot-scope="scope">
@@ -30,8 +38,13 @@
             <el-table-column label="具体描述" prop="describe" />
             <el-table-column label="状态">
               <template slot-scope="scope">
-                <el-switch v-model="scope.row.status" active-color="#13ce66" inactive-color="#ff4949" active-value="1"
-                  inactive-value="0" />
+                <el-switch
+                  v-model="scope.row.status"
+                  active-color="#13ce66"
+                  inactive-color="#ff4949"
+                  active-value="1"
+                  inactive-value="0"
+                />
               </template>
             </el-table-column>
             <el-table-column label="操作">
@@ -47,9 +60,15 @@
             </el-table-column>
           </el-table>
           <div class="block">
-            <el-pagination :current-page="currentPage" :page-sizes="[10, 20, 30, 40]" :page-size="10"
-              layout="total, sizes, prev, pager, next, jumper" :total="8" @size-change="handleSizeChange"
-              @current-change="handleCurrentChange" />
+            <el-pagination
+              :current-page="currentPage"
+              :page-sizes="[10, 20, 30, 40]"
+              :page-size="10"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="8"
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+            />
           </div>
         </el-col>
       </el-tab-pane>
@@ -57,8 +76,10 @@
         <el-row>
           <el-button type="primary">新建规则</el-button>
         </el-row>
-        <el-table :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
-          style="width: 100%">
+        <el-table
+          :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
+          style="width: 100%"
+        >
           <el-table-column label="规则名称" prop="规则名称" />
           <el-table-column label="适用对象" prop="适用对象" />
           <el-table-column label="脱敏算法" prop="脱敏算法" />
@@ -66,8 +87,13 @@
           <el-table-column label="执行周期" prop="执行周期" />
           <el-table-column label="状态">
             <template slot-scope="scope">
-              <el-switch v-model="scope.row.status" active-color="#13ce66" inactive-color="#ff4949" active-value="1"
-                inactive-value="0" />
+              <el-switch
+                v-model="scope.row.status"
+                active-color="#13ce66"
+                inactive-color="#ff4949"
+                active-value="1"
+                inactive-value="0"
+              />
             </template>
           </el-table-column>
           <el-table-column label="操作">
@@ -83,9 +109,15 @@
           </el-table-column>
         </el-table>
         <div class="block">
-          <el-pagination :current-page="currentPage" :page-sizes="[10, 20, 30, 40]" :page-size="10"
-            layout="total, sizes, prev, pager, next, jumper" :total="8" @size-change="handleSizeChange"
-            @current-change="handleCurrentChange" />
+          <el-pagination
+            :current-page="currentPage"
+            :page-sizes="[10, 20, 30, 40]"
+            :page-size="10"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="8"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+          />
         </div>
       </el-tab-pane>
       <el-tab-pane label="脱敏算法测试" name="third">
@@ -110,7 +142,7 @@
                 <el-button>重置</el-button>
               </el-form-item>
               <el-form-item label="脱敏结果">
-                <el-input v-model="hashform.tuodata" type="textarea" rows="3" />
+                <el-input v-model="hashform.tuodata" :disabled="true" type="textarea" rows="3" />
               </el-form-item>
             </el-form>
           </el-tab-pane>
@@ -132,11 +164,11 @@
               </el-form-item>
               <el-form-item label="掩盖位置">
                 <el-col :span="10"><el-form-item label="x">
-                    <el-input v-model="yangaiform.x" />
-                  </el-form-item></el-col>
+                  <el-input v-model="yangaiform.x" />
+                </el-form-item></el-col>
                 <el-col :span="10"><el-form-item label="y">
-                    <el-input v-model="yangaiform.y" />
-                  </el-form-item></el-col>
+                  <el-input v-model="yangaiform.y" />
+                </el-form-item></el-col>
               </el-form-item>
               <el-form-item label="原始数据">
                 <el-input v-model="yangaiform.origindata" type="textarea" rows="3" />
@@ -146,7 +178,7 @@
                 <el-button>重置</el-button>
               </el-form-item>
               <el-form-item label="脱敏结果">
-                <el-input v-model="yangaiform.tuodata" type="textarea" rows="3" />
+                <el-input v-model="yangaiform.tuodata" :disabled="true" type="textarea" rows="3" />
               </el-form-item>
             </el-form>
           </el-tab-pane>
@@ -162,7 +194,7 @@
 </template>
 
 <script>
-import { sendDesensiTest_yangai,sendDesensiTest_hash} from '@/api/desensiTest'
+import { sendDesensiTest_yangai, sendDesensiTest_hash } from '@/api/desensiTest'
 
 export default {
   data() {
@@ -399,11 +431,11 @@ export default {
         })
     },
     hashSubmit() {
-      sendDesensiTest_hash(this.hashform).then(response =>{
+      sendDesensiTest_hash(this.hashform).then(response => {
         console.log(response)
         this.hashform.tuodata = response.data.result
       })
-      .catch(error => {
+        .catch(error => {
           // 处理请求失败的错误信息
           console.error(error)
         })
@@ -412,4 +444,8 @@ export default {
 }
 </script>
 
-<style></style>
+<style>
+  .el-textarea.is-disabled .el-textarea__inner{
+    color: rgb(25, 25, 25);
+  }
+</style>

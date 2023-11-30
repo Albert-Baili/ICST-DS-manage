@@ -15,7 +15,7 @@ users = {
 def generate_token(username):
     payload = {
         'username': username,
-        'exp': datetime.utcnow() + timedelta(minutes=5)  # 设置有效期为5分钟
+        'exp': datetime.utcnow() + timedelta(minutes=20)  # 设置有效期为20分钟
     }
     token = jwt.encode(payload, 'secret_key', algorithm='HS256')
     return token
