@@ -29,3 +29,10 @@ export function getallcert() {
       data
     })
   }
+
+  export function certDownloadByID(index) {
+    return request({
+      url: '/api/certificates/' + index,
+      method: 'get'
+    })
+  }

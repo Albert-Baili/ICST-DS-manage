@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import { getallcert} from '@/api/tunnel'
+import { getallcert,certDownloadByID } from '@/api/tunnel'
 export default {
   data() {
     return {
@@ -47,6 +47,11 @@ export default {
           // 处理请求失败的错误信息
           console.error(error);
         });
+    },
+    handleEdit(index,row){
+      certDownloadByID(row.id).then(response => {
+        console.log(response);
+      })
     },
     handleSizeChange(val) {
       console.log(val)

@@ -123,8 +123,7 @@ def get_certificate_file(certificate_id):
         return jsonify(response)
 
 @app.route('/api/certificates/getallcerts', methods=['GET'])
-@token_required
-def get_all_certs(token_payload):
+def get_all_certs():
     certs=query_certificates()
     response = {
         'code': 20000,
