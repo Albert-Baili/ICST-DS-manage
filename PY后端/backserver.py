@@ -109,8 +109,7 @@ def get_certificate_file(certificate_id):
     if certificate_file_content:
         return send_file(
             io.BytesIO(certificate_file_content),
-            as_attachment=True,
-            attachment_filename=f'certificate_{certificate_id}.pem',
+            download_name=f'certificate_{certificate_id}.pem',
             mimetype='application/x-pem-file'
         )
     else:

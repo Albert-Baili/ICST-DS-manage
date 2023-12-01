@@ -102,14 +102,13 @@ def insert_log(log_message):
 def read_certificate_file(certificate_id):
     conn = sqlite3.connect(db_file)
     c = conn.cursor()
-
     c.execute("SELECT certificate_file FROM certificates WHERE id=?", (certificate_id,))
     data = c.fetchone()
     if data:
         certificate_file_content = data[0]
         return certificate_file_content
     conn.close()
-    return None
+    return False
 
 # 查询证书表
 def query_certificates():
