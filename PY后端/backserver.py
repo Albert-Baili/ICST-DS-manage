@@ -27,7 +27,7 @@ from sqlManage import create_database,read_certificate_file,query_certificates,q
 from tuominTest.desensitizeYangai import handle_yangai_request
 from tuominTest.desensitizeHash import handle_Hash_request
 
-#配置数据库文件
+#配置数据库文件 sqlite
 db_file = 'devicemanage.db'
 
 app = Flask(__name__)
@@ -36,7 +36,6 @@ CORS(app)  # 添加CORS中间件
 @app.route('/')
 def index():
     return render_template('index.html')
-
 
 #用户登录与登出
 @app.route('/vue-element-admin/user/login', methods=['POST'])

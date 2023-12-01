@@ -40,10 +40,3 @@ def scan_local_network():
 
     return active_devices
 
-# if __name__ == "__main__":
-#     local_ip = get_local_ip()
-#     print("本机IP地址:", local_ip)
-    # active_devices = scan_local_network()
-    # print("局域网内在线设备:")
-    # for device in active_devices:
-    #     print(device)

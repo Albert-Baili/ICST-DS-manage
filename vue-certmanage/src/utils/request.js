@@ -30,7 +30,7 @@ service.interceptors.request.use(
   }
 )
 
-// response interceptor
+// 响应拦截器
 service.interceptors.response.use(
   /**
    * If you want to get http information such as headers or status
@@ -43,8 +43,12 @@ service.interceptors.response.use(
    * You can also judge the status by HTTP Status Code
    */
   response => {
-    const res = response.data
+    // 检查响应类型是否为证书文件下载
+    if (response.headers['content-type'] === 'application/x-pem-file') {
+      return response // 直接返回文件响应
+    }
 
+    const res = response.data
     // if the custom code is not 20000, it is judged as an error.
     if (res.code !== 20000) {
       Message({
@@ -66,7 +70,7 @@ service.interceptors.response.use(
           })
         })
       }
-      if (res.code === 60204 ) {
+      if (res.code === 60204) {
         // to re-login
         MessageBox.confirm('用户名或密码错误，请检查', {
           confirmButtonText: '重新登录',
@@ -79,8 +83,7 @@ service.interceptors.response.use(
         })
       }
       return Promise.reject(new Error(res.message || 'Error'))
-    } 
-    else {
+    } else {
       return res
     }
   },
