@@ -1,93 +1,271 @@
 <template>
-    <div style="padding:30px;">
-      <div>
-        <el-table :data="certificates.slice((currentPage - 1) * pageSize, currentPage * pageSize)" stripe>
-          <el-table-column width="40px" label="ID" prop="id" />
-          <el-table-column label="Common Name" prop="common_name" />
-          <el-table-column label="序列号" prop="serial_number" />
-          <!-- <el-table-column label="Organization" prop="organization"></el-table-column>
-          <el-table-column label="Organizational Unit" prop="organizational_unit"></el-table-column> -->
-          <!-- Add more columns as needed for other certificate properties -->
-          <el-table-column label="签发者" prop="issuer_common_name" />
-          <el-table-column label="签发时间" prop="valid_from" />
-          <el-table-column label="到期时间" prop="valid_until" />
-          <el-table-column label="添加时间" prop="added_time" />
-          <el-table-column min-width="100px " label="操作">
-            <template slot-scope="scope">
-              <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">下载</el-button>
-              <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-      </div>
-      <el-pagination
-        :current-page="currentPage"
-        :page-sizes="[2, 10, 20, 30, 40]"
-        :page-size="pageSize"
-        layout="sizes, prev, pager, next"
-        :prev-text="'上一页'"
-        :next-text="'下一页'"
-        @size-change="handleSizeChange"
-        @current-change="handlePageChange"
-      />
+    <div class="app-container">
+      <el-button type="primary" @click="handleAddRole">新增角色</el-button>
+  
+      <el-table :data="rolesList" style="width: 100%;margin-top:30px;" border>
+        <el-table-column align="center" label="角色Key" width="220">
+          <template slot-scope="scope">
+            {{ scope.row.key }}
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="角色名称" width="220">
+          <template slot-scope="scope">
+            {{ scope.row.name }}
+          </template>
+        </el-table-column>
+        <el-table-column align="header-center" label="描述">
+          <template slot-scope="scope">
+            {{ scope.row.description }}
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="操作">
+          <template slot-scope="scope">
+            <el-button type="primary" size="small" @click="handleEdit(scope)">编辑</el-button>
+            <el-button type="danger" size="small" @click="handleDelete(scope)">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+  
+      <el-dialog :visible.sync="dialogVisible" :title="dialogType==='edit'?'编辑角色':'新增角色'">
+        <el-form :model="role" label-width="80px" label-position="left">
+          <el-form-item label="名称">
+            <el-input v-model="role.name" placeholder="角色名称" />
+          </el-form-item>
+          <el-form-item label="描述">
+            <el-input
+              v-model="role.description"
+              :autosize="{ minRows: 2, maxRows: 4}"
+              type="textarea"
+              placeholder="角色描述"
+            />
+          </el-form-item>
+          <el-form-item label="权限">
+            <el-tree
+              ref="tree"
+              :check-strictly="checkStrictly"
+              :data="routesData"
+              :props="defaultProps"
+              show-checkbox
+              node-key="path"
+              class="permission-tree"
+            />
+          </el-form-item>
+        </el-form>
+        <div style="text-align:right;">
+          <el-button type="danger" @click="dialogVisible=false">取消</el-button>
+          <el-button type="primary" @click="confirmRole">确认</el-button>
+        </div>
+      </el-dialog>
     </div>
   </template>
   
   <script>
-  import { getallcert, certDownloadByID } from '@/api/tunnel'
+  import path from 'path'
+  import { deepClone } from '@/utils'
+  import { getRoutes, getRoles, addRole, deleteRole, updateRole } from '@/api/role'
+  
+  const defaultRole = {
+    key: '',
+    name: '',
+    description: '',
+    routes: []
+  }
+  
   export default {
     data() {
       return {
-        currentPage: 1,
-        pageSize: 10,
-        totalItems: 0,
-        certificates: [] // Initialize an empty array for the certificate list
+        role: Object.assign({}, defaultRole),
+        routes: [],
+        rolesList: [],
+        dialogVisible: false,
+        dialogType: 'new',
+        checkStrictly: false,
+        defaultProps: {
+          children: 'children',
+          label: 'title'
+        }
       }
     },
-    mounted() {
-      // Fetch the certificate list when the component is mounted
-      this.fetchData()
+    computed: {
+      routesData() {
+        return this.routes
+      }
+    },
+    created() {
+      // Mock: get all routes and roles list from server
+      this.getRoutes()
+      this.getRoles()
     },
     methods: {
-      fetchData() {
-        getallcert().then(response => {
-          this.certificates = JSON.parse(response.data)
-          this.totalItems = this.certificates.length
+      async getRoutes() {
+        const res = await getRoutes()
+        this.serviceRoutes = res.data
+        this.routes = this.generateRoutes(res.data)
+      },
+      async getRoles() {
+        const res = await getRoles()
+        this.rolesList = res.data
+      },
+  
+      // Reshape the routes structure so that it looks the same as the sidebar
+      generateRoutes(routes, basePath = '/') {
+        const res = []
+  
+        for (let route of routes) {
+          // skip some route
+          if (route.hidden) { continue }
+  
+          const onlyOneShowingChild = this.onlyOneShowingChild(route.children, route)
+  
+          if (route.children && onlyOneShowingChild && !route.alwaysShow) {
+            route = onlyOneShowingChild
+          }
+  
+          const data = {
+            path: path.resolve(basePath, route.path),
+            title: route.meta && route.meta.title
+  
+          }
+  
+          // recursive child routes
+          if (route.children) {
+            data.children = this.generateRoutes(route.children, data.path)
+          }
+          res.push(data)
+        }
+        return res
+      },
+      generateArr(routes) {
+        let data = []
+        routes.forEach(route => {
+          data.push(route)
+          if (route.children) {
+            const temp = this.generateArr(route.children)
+            if (temp.length > 0) {
+              data = [...data, ...temp]
+            }
+          }
         })
-          .catch(error => {
-            // 处理请求失败的错误信息
-            console.error(error)
+        return data
+      },
+      handleAddRole() {
+        this.role = Object.assign({}, defaultRole)
+        if (this.$refs.tree) {
+          this.$refs.tree.setCheckedNodes([])
+        }
+        this.dialogType = 'new'
+        this.dialogVisible = true
+      },
+      handleEdit(scope) {
+        this.dialogType = 'edit'
+        this.dialogVisible = true
+        this.checkStrictly = true
+        this.role = deepClone(scope.row)
+        this.$nextTick(() => {
+          const routes = this.generateRoutes(this.role.routes)
+          this.$refs.tree.setCheckedNodes(this.generateArr(routes))
+          // set checked state of a node not affects its father and child nodes
+          this.checkStrictly = false
+        })
+      },
+      handleDelete({ $index, row }) {
+        this.$confirm('Confirm to remove the role?', 'Warning', {
+          confirmButtonText: 'Confirm',
+          cancelButtonText: 'Cancel',
+          type: 'warning'
+        })
+          .then(async() => {
+            await deleteRole(row.key)
+            this.rolesList.splice($index, 1)
+            this.$message({
+              type: 'success',
+              message: 'Delete succed!'
+            })
           })
+          .catch(err => { console.error(err) })
       },
-      handleEdit(index, row) {
-        certDownloadByID(row.id).then(response => {
-          // 处理证书文件下载
-          // 创建 Blob
-          const blob = new Blob([response.data], { type: 'application/x-pem-file' })
+      generateTree(routes, basePath = '/', checkedKeys) {
+        const res = []
   
-          // 创建下载链接
-          const downloadUrl = window.URL.createObjectURL(blob)
-          const link = document.createElement('a')
-          link.href = downloadUrl
-          link.setAttribute('download', 'certificate_' + row.id + '.pem') // 设置为动态文件名
-          document.body.appendChild(link)
-          link.click()
-          link.remove()
+        for (const route of routes) {
+          const routePath = path.resolve(basePath, route.path)
   
-          // 清除 Blob URL
-          window.URL.revokeObjectURL(downloadUrl)
-          return // 不再处理响应
+          // recursive child routes
+          if (route.children) {
+            route.children = this.generateTree(route.children, routePath, checkedKeys)
+          }
+  
+          if (checkedKeys.includes(routePath) || (route.children && route.children.length >= 1)) {
+            res.push(route)
+          }
+        }
+        return res
+      },
+      async confirmRole() {
+        const isEdit = this.dialogType === 'edit'
+  
+        const checkedKeys = this.$refs.tree.getCheckedKeys()
+        this.role.routes = this.generateTree(deepClone(this.serviceRoutes), '/', checkedKeys)
+  
+        if (isEdit) {
+          await updateRole(this.role.key, this.role)
+          for (let index = 0; index < this.rolesList.length; index++) {
+            if (this.rolesList[index].key === this.role.key) {
+              this.rolesList.splice(index, 1, Object.assign({}, this.role))
+              break
+            }
+          }
+        } else {
+          const { data } = await addRole(this.role)
+          this.role.key = data.key
+          this.rolesList.push(this.role)
+        }
+  
+        const { description, key, name } = this.role
+        this.dialogVisible = false
+        this.$notify({
+          title: 'Success',
+          dangerouslyUseHTMLString: true,
+          message: `
+              <div>Role Key: ${key}</div>
+              <div>Role Name: ${name}</div>
+              <div>Description: ${description}</div>
+            `,
+          type: 'success'
         })
       },
-      handleSizeChange(val) {
-        console.log(val)
-        this.pageSize = val
-        this.currentPage = 1
-      },
-      handlePageChange(val) {
-        this.currentPage = val
+      // reference: src/view/layout/components/Sidebar/SidebarItem.vue
+      onlyOneShowingChild(children = [], parent) {
+        let onlyOneChild = null
+        const showingChildren = children.filter(item => !item.hidden)
+  
+        // When there is only one child route, the child route is displayed by default
+        if (showingChildren.length === 1) {
+          onlyOneChild = showingChildren[0]
+          onlyOneChild.path = path.resolve(parent.path, onlyOneChild.path)
+          return onlyOneChild
+        }
+  
+        // Show parent if there are no child route to display
+        if (showingChildren.length === 0) {
+          onlyOneChild = { ... parent, path: '', noShowingChildren: true }
+          return onlyOneChild
+        }
+  
+        return false
       }
     }
   }
   </script>
+  
+  <style lang="scss" scoped>
+  .app-container {
+    .roles-table {
+      margin-top: 30px;
+    }
+    .permission-tree {
+      margin-bottom: 30px;
+    }
+  }
+  </style>
   

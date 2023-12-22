@@ -2,9 +2,9 @@
     <div style="padding:30px;">
         <div>
             <el-table :data="logs.slice((currentPage-1)*pageSize,currentPage*pageSize)" stripe>
-                <el-table-column label="ID" prop="id"></el-table-column>
+                <el-table-column label="日志ID" prop="id"></el-table-column>
                 <el-table-column label="时间" prop="timestamp"></el-table-column>
-                <el-table-column label="消息" prop="logmessage"></el-table-column>
+                <el-table-column label="操作记录" prop="logmessage"></el-table-column>
             </el-table>
 
             <el-pagination :current-page="currentPage" :page-sizes="[10, 20, 30, 40]" :page-size="pageSize"

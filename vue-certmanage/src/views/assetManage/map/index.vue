@@ -1,90 +1,231 @@
 <template>
-    <div style="padding:30px;">
-      <div>
-        <el-table stripe fit:true strip :data="tunnels.slice((currentPage - 1) * pageSize, currentPage * pageSize)">
-          <el-table-column width="40px" prop="id" label="ID"></el-table-column>
-          <el-table-column prop="tunnel_name" label="隧道名称"></el-table-column>
-          <el-table-column prop="server_ip" label="目的IP"></el-table-column>
-          <el-table-column prop="server_port" label="目的端口"></el-table-column>
-          <el-table-column prop="status" label="隧道状态"></el-table-column>
-          <el-table-column min-width="150px " prop="created_time" label="创建时间"><template slot-scope="scope">
-              <i class="el-icon-time"></i>
-              <span style="margin-left: 10px">{{ scope.row.created_time }}</span>
-            </template></el-table-column>
-          <el-table-column prop="cert_id" label="服务器证书"></el-table-column>
-          <el-table-column min-width="100px " label="操作">
-            <template slot-scope="scope">
-              <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">连接</el-button>
-              <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-  
-        <el-pagination :current-page="currentPage" :page-sizes="[5, 10, 20, 30, 40]" :page-size="pageSize"
-          layout="sizes, prev, pager, next" :prev-text="'上一页'" :next-text="'下一页'" @size-change="handleSizeChange"
-          @current-change="handlePageChange"> </el-pagination>
-      </div>
-      <el-dialog title="隧道通信" :visible.sync="centerDialogVisible" width="30%" center>
-        <el-form :model="contentform">
-      <el-form-item label="消息内容" :label-width="formLabelWidth">
-        <el-input v-model="contentform.info" autocomplete="off"></el-input>
-      </el-form-item>
-  
-    </el-form>
-        <span slot="footer" class="dialog-footer">
-          <el-button @click="centerDialogVisible = false">断开</el-button>
-          <el-button type="primary" @click="centerDialogVisible = false">发送</el-button>
-        </span>
-      </el-dialog>
+    <div>
+        <el-row>
+            <el-col :span="6">
+                <el-card style="height: 20%;" shadow="hover">
+                    <el-col :span="6">
+                        <i class="el-icon-coin" style="font-size: 250%;padding-left: 10%;"></i>
+                        <span style="display: grid;padding-top: 5%;padding-left: 10%;">MySQL</span>
+                    </el-col>
+                    <el-col :span="6">
+                        <span style="font-size: larger;">camanage</span>
+                        <span style="display: grid;">ID:001</span>
+                        <el-button type="text" @click="table = true">详情</el-button>
+                        <el-drawer :visible.sync="table" direction="rtl" size="50%">
+                            <el-col>
+                                <i class="el-icon-coin" style="font-size: 300%;padding-left: 5%;"></i>
+                                <span style="font-size: 150%;padding-left: 2%;">camanage</span>
+                                <el-divider content-position="left">
+                                    <span class="custom-divider-text">基本信息</span>
+                                </el-divider>
+                            </el-col>
+                            <el-descriptions class="margin-top" :column="2"
+                                style="padding-left: 5%;padding-top: 8%;font-size: 110%;">
+                                <el-descriptions-item label="数据库类型">MySQL</el-descriptions-item>
+                                <el-descriptions-item label="数据库版本">5.6.50-log</el-descriptions-item>
+                                <el-descriptions-item label="创建人">root</el-descriptions-item>
+                                <el-descriptions-item label="数据总量">0.16MB</el-descriptions-item>
+                                <el-descriptions-item label="创建时间">2023年11月20日 15:23:09</el-descriptions-item>
+                                <el-descriptions-item label="更新时间">2023年12月23日 21:59:34</el-descriptions-item>
+                                <el-descriptions-item label="描述">
+                                    <el-button type="primary" icon="el-icon-edit" size="small"></el-button>
+                                </el-descriptions-item>
+                                <el-descriptions-item label="标签">
+                                    <el-button type="primary" icon="el-icon-edit" size="small"></el-button>
+                                </el-descriptions-item>
+                                <el-descriptions-item label="分类">
+                                    <el-button type="primary" icon="el-icon-edit" size="small"></el-button>
+                                </el-descriptions-item>
+                                <el-descriptions-item label="密级">
+                                    <el-button type="primary" icon="el-icon-edit" size="small"></el-button>
+                                </el-descriptions-item>
+                            </el-descriptions>
+                            <el-divider content-position="left">
+                                    <span class="custom-divider-text">视图信息</span>
+                                </el-divider>
+                        </el-drawer>
+                    </el-col>
+
+                </el-card>
+            </el-col>
+        </el-row>
+
+        <el-row>
+            <el-col :span="6">
+                <el-card style="height: 20%;" shadow="hover">
+                    <el-col :span="6">
+                        <i class="el-icon-coin" style="font-size: 250%;padding-left: 10%;"></i>
+                        <span style="display: grid;padding-top: 5%;padding-left: 10%;">MySQL</span>
+                    </el-col>
+                    <el-col :span="6">
+                        <span style="font-size: larger;">camanage</span>
+                        <span style="display: grid;">ID:001</span>
+                        <el-button type="text" @click="table = true">详情</el-button>
+                        <el-drawer :visible.sync="table" direction="rtl" size="50%">
+                            <el-col>
+                                <i class="el-icon-coin" style="font-size: 300%;padding-left: 5%;"></i>
+                                <span style="font-size: 150%;padding-left: 2%;">camanage</span>
+                                <el-divider content-position="left">
+                                    <span class="custom-divider-text">基本信息</span>
+                                </el-divider>
+                            </el-col>
+                            <el-descriptions class="margin-top" :column="2"
+                                style="padding-left: 5%;padding-top: 8%;font-size: 110%;">
+                                <el-descriptions-item label="数据库类型">MySQL</el-descriptions-item>
+                                <el-descriptions-item label="数据库版本">5.6.50-log</el-descriptions-item>
+                                <el-descriptions-item label="创建人">root</el-descriptions-item>
+                                <el-descriptions-item label="数据总量">0.16MB</el-descriptions-item>
+                                <el-descriptions-item label="创建时间">2023年11月20日 15:23:09</el-descriptions-item>
+                                <el-descriptions-item label="更新时间">2023年12月23日 21:59:34</el-descriptions-item>
+                                <el-descriptions-item label="描述">
+                                    <el-button type="primary" icon="el-icon-edit" size="small"></el-button>
+                                </el-descriptions-item>
+                                <el-descriptions-item label="标签">
+                                    <el-button type="primary" icon="el-icon-edit" size="small"></el-button>
+                                </el-descriptions-item>
+                                <el-descriptions-item label="分类">
+                                    <el-button type="primary" icon="el-icon-edit" size="small"></el-button>
+                                </el-descriptions-item>
+                                <el-descriptions-item label="密级">
+                                    <el-button type="primary" icon="el-icon-edit" size="small"></el-button>
+                                </el-descriptions-item>
+                            </el-descriptions>
+                            <el-divider content-position="left">
+                                    <span class="custom-divider-text">视图信息</span>
+                                </el-divider>
+                        </el-drawer>
+                    </el-col>
+
+                </el-card>
+            </el-col>
+        </el-row>
+
+        <el-row>
+            <el-col :span="6">
+                <el-card style="height: 20%;" shadow="hover">
+                    <el-col :span="6">
+                        <i class="el-icon-coin" style="font-size: 250%;padding-left: 10%;"></i>
+                        <span style="display: grid;padding-top: 5%;padding-left: 10%;">MySQL</span>
+                    </el-col>
+                    <el-col :span="6">
+                        <span style="font-size: larger;">camanage</span>
+                        <span style="display: grid;">ID:001</span>
+                        <el-button type="text" @click="table = true">详情</el-button>
+                        <el-drawer :visible.sync="table" direction="rtl" size="50%">
+                            <el-col>
+                                <i class="el-icon-coin" style="font-size: 300%;padding-left: 5%;"></i>
+                                <span style="font-size: 150%;padding-left: 2%;">camanage</span>
+                                <el-divider content-position="left">
+                                    <span class="custom-divider-text">基本信息</span>
+                                </el-divider>
+                            </el-col>
+                            <el-descriptions class="margin-top" :column="2"
+                                style="padding-left: 5%;padding-top: 8%;font-size: 110%;">
+                                <el-descriptions-item label="数据库类型">MySQL</el-descriptions-item>
+                                <el-descriptions-item label="数据库版本">5.6.50-log</el-descriptions-item>
+                                <el-descriptions-item label="创建人">root</el-descriptions-item>
+                                <el-descriptions-item label="数据总量">0.16MB</el-descriptions-item>
+                                <el-descriptions-item label="创建时间">2023年11月20日 15:23:09</el-descriptions-item>
+                                <el-descriptions-item label="更新时间">2023年12月23日 21:59:34</el-descriptions-item>
+                                <el-descriptions-item label="描述">
+                                    <el-button type="primary" icon="el-icon-edit" size="small"></el-button>
+                                </el-descriptions-item>
+                                <el-descriptions-item label="标签">
+                                    <el-button type="primary" icon="el-icon-edit" size="small"></el-button>
+                                </el-descriptions-item>
+                                <el-descriptions-item label="分类">
+                                    <el-button type="primary" icon="el-icon-edit" size="small"></el-button>
+                                </el-descriptions-item>
+                                <el-descriptions-item label="密级">
+                                    <el-button type="primary" icon="el-icon-edit" size="small"></el-button>
+                                </el-descriptions-item>
+                            </el-descriptions>
+                            <el-divider content-position="left">
+                                    <span class="custom-divider-text">视图信息</span>
+                                </el-divider>
+                        </el-drawer>
+                    </el-col>
+
+                </el-card>
+            </el-col>
+        </el-row>
+
+        <el-row>
+            <el-col :span="6">
+                <el-card style="height: 20%;" shadow="hover">
+                    <el-col :span="6">
+                        <i class="el-icon-coin" style="font-size: 250%;padding-left: 10%;"></i>
+                        <span style="display: grid;padding-top: 5%;padding-left: 10%;">MySQL</span>
+                    </el-col>
+                    <el-col :span="6">
+                        <span style="font-size: larger;">camanage</span>
+                        <span style="display: grid;">ID:001</span>
+                        <el-button type="text" @click="table = true">详情</el-button>
+                        <el-drawer :visible.sync="table" direction="rtl" size="50%">
+                            <el-col>
+                                <i class="el-icon-coin" style="font-size: 300%;padding-left: 5%;"></i>
+                                <span style="font-size: 150%;padding-left: 2%;">camanage</span>
+                                <el-divider content-position="left">
+                                    <span class="custom-divider-text">基本信息</span>
+                                </el-divider>
+                            </el-col>
+                            <el-descriptions class="margin-top" :column="2"
+                                style="padding-left: 5%;padding-top: 8%;font-size: 110%;">
+                                <el-descriptions-item label="数据库类型">MySQL</el-descriptions-item>
+                                <el-descriptions-item label="数据库版本">5.6.50-log</el-descriptions-item>
+                                <el-descriptions-item label="创建人">root</el-descriptions-item>
+                                <el-descriptions-item label="数据总量">0.16MB</el-descriptions-item>
+                                <el-descriptions-item label="创建时间">2023年11月20日 15:23:09</el-descriptions-item>
+                                <el-descriptions-item label="更新时间">2023年12月23日 21:59:34</el-descriptions-item>
+                                <el-descriptions-item label="描述">
+                                    <el-button type="primary" icon="el-icon-edit" size="small"></el-button>
+                                </el-descriptions-item>
+                                <el-descriptions-item label="标签">
+                                    <el-button type="primary" icon="el-icon-edit" size="small"></el-button>
+                                </el-descriptions-item>
+                                <el-descriptions-item label="分类">
+                                    <el-button type="primary" icon="el-icon-edit" size="small"></el-button>
+                                </el-descriptions-item>
+                                <el-descriptions-item label="密级">
+                                    <el-button type="primary" icon="el-icon-edit" size="small"></el-button>
+                                </el-descriptions-item>
+                            </el-descriptions>
+                            <el-divider content-position="left">
+                                    <span class="custom-divider-text">视图信息</span>
+                                </el-divider>
+                        </el-drawer>
+                    </el-col>
+
+                </el-card>
+            </el-col>
+        </el-row>
     </div>
-  </template>
+</template>
   
-  <script>
-  import { getalltunnel } from '@/api/tunnel'
-  export default {
+<script>
+export default {
     data() {
-      return {
-        tunnels: [],
-        currentPage: 1,
-        pageSize: 10,
-        totalItems: 0,
-        centerDialogVisible: false,
-        contentform:{
-          info:''
-        }
-      };
-    },
-    created() {
-      this.fetchData();
+        return {
+            table: false,
+            dialog: false,
+            loading: false,
+            formLabelWidth: '80px',
+            timer: null,
+        };
     },
     methods: {
-      fetchData() {
-        getalltunnel().then(response => {
-          this.tunnels = JSON.parse(response.data);
-          this.totalItems = this.tunnels.length;
-        })
-          .catch(error => {
-            // 处理请求失败的错误信息
-            console.error(error);
-          });
-      },
-      handleSizeChange(val) {
-        console.log(val)
-        this.pageSize = val;
-        this.currentPage = 1;
-      },
-      handlePageChange(val) {
-        this.currentPage = val;
-      },
-      handleEdit(a, b) {
-        console.log(a)
-        console.log(b)
-        this.centerDialogVisible = true
-      }
+        handleClose(done) {
+            if (this.loading) {
+                return;
+            }
+        },
     },
-  };
-  </script>
-  
-  <style>
-  /* Add any custom styles here */
-  </style>  
+};
+</script>
+
+
+<style scoped>
+::v-deep .custom-divider-text {
+    font-size: 130%;
+}
+</style>
