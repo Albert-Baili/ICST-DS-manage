@@ -27,6 +27,9 @@ from sqlManage import create_database,read_certificate_file,query_certificates,q
 from tuominTest.desensitizeYangai import handle_yangai_request
 from tuominTest.desensitizeHash import handle_Hash_request
 
+#数据库扫描模块
+from sqlsacnDatabase import get_database_summary
+
 #配置数据库文件 sqlite
 db_file = 'devicemanage.db'
 
@@ -155,6 +158,13 @@ def handle_yangai_tuomintest(token_payload):
 def handle_hash_tuomintest(token_payload):
     data = request.json
     response = handle_Hash_request(data)
+    return jsonify(response)
+
+#数据库扫描
+
+@app.route('/api/sql_scan/get_sql_data', methods=['GET'])
+def get_sqldDB_data():
+    response = get_database_summary()
     return jsonify(response)
 
 if __name__ == '__main__':
