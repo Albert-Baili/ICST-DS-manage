@@ -1,30 +1,25 @@
 /** When your routing table is too long, you can split it into small modules **/
-
+/*
 import Layout from '@/layout'
 
 const nestedRouter = {
-  path: '/nested',
+  path: '/riskMonitor',
   component: Layout,
   redirect: '/nested/menu1/menu1-1',
-  name: 'Nested',
+  name: 'riskMonitor',
   meta: {
-    title: '隧道管理',
+    title: '数据风险监测',
     icon: 'nested'
   },
   children: [
     {
-      path: 'newtunnel',
-      name: 'newtunnel',
-      component: () => import('@/views/nested/newtunnel/index'),
-      meta: { title: '新建隧道' }
-    },
-    {
-      path: 'tunnelList',
-      name: 'tunnelList',
-      component: () => import('@/views/nested/tunnelList/index'),
-      meta: { title: '隧道列表' }
+      path: 'trans',
+      name: 'trans',
+      component: () => import('@/views/riskMonitor/trans/index'),
+      meta: { title: '数据传输加密' }
     }
   ]
 }
 
 export default nestedRouter
+*/

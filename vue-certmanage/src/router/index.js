@@ -7,9 +7,6 @@ Vue.use(Router)
 import Layout from '@/layout'
 
 /* Router Modules */
-
-import nestedRouter from './modules/nested'
-
 /**
  * Note: sub-menu only appear when route children.length >= 1
  * Detail see: https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
@@ -82,7 +79,6 @@ export const constantRoutes = [
       }
     ]
   },
-  nestedRouter,
   {
     path: '/profile',
     component: Layout,
@@ -105,15 +101,43 @@ export const constantRoutes = [
  * the routes that need to be dynamically loaded based on user roles
  */
 export const asyncRoutes = [
+  // {
+  //   path: '/certmanage',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: '/certmanage',
+  //       component: () => import('@/views/certmanage/index'),
+  //       name: 'certmanage',
+  //       meta: { title: '证书管理', icon: 'icon', noCache: true }
+  //     }
+  //   ]
+  // },
   {
-    path: '/certmanage',
+    path: '/assetManage',
     component: Layout,
+    meta: {
+      title: '数据资产管理',
+      icon: 'chart'
+    },
     children: [
       {
-        path: '/certmanage',
-        component: () => import('@/views/certmanage/index'),
-        name: 'certmanage',
-        meta: { title: '证书管理', icon: 'icon', noCache: true }
+        path: '/assetManage/authority/',
+        component: () => import('@/views/assetManage/authority/index'),
+        name: 'authority',
+        meta: { title: '资产权限管理', icon: 'icon', noCache: true }
+      },
+      {
+        path: '/assetManage/map/',
+        component: () => import('@/views/assetManage/map/index'),
+        name: 'map',
+        meta: { title: '资产地图目录', icon: 'icon', noCache: true }
+      },
+      {
+        path: '/assetManage/backup/',
+        component: () => import('@/views/assetManage/backup/index'),
+        name: 'backup',
+        meta: { title: '资产备份恢复', icon: 'icon', noCache: true }
       }
     ]
   },
@@ -121,7 +145,7 @@ export const asyncRoutes = [
     path: '/DataQuality',
     component: Layout,
     meta: {
-      title: '数据质量管理',
+      title: '数据隐私保护',
       icon: 'chart'
     },
     children: [
@@ -129,25 +153,41 @@ export const asyncRoutes = [
         path: '/DataQuality/desensi/',
         component: () => import('@/views/DataQuality/desensi/index'),
         name: 'DataQuality',
-        meta: { title: '脱敏规则配置', icon: 'icon', noCache: true }
+        meta: { title: '数据识别', icon: 'icon', noCache: true }
       },
       {
         path: '/DataQuality/quality/',
         component: () => import('@/views/DataQuality/quality/index'),
         name: 'DataQuality',
-        meta: { title: '质量模板配置', icon: 'icon', noCache: true }
+        meta: { title: '数据治理', icon: 'icon', noCache: true }
       }
     ]
   },
   {
-    path: '/log',
+    path: '/riskMonitor',
     component: Layout,
+    meta: {
+      title: '数据风险监测',
+      icon: 'chart'
+    },
     children: [
       {
-        path: '/log',
-        component: () => import('@/views/log/index'),
+        path: '/riskMonitor/log',
+        component: () => import('@/views/riskMonitor/log/index'),
         name: 'log',
-        meta: { title: '日志', icon: 'message', noCache: true }
+        meta: { title: '日志监控审计', icon: 'message', noCache: true }
+      },
+      {
+        path: '/riskMonitor/trans',
+        component: () => import('@/views/riskMonitor/trans/index'),
+        name: 'trans',
+        meta: { title: '数据传输加密', icon: 'icon', noCache: true}
+      },
+      {
+        path: '/riskMonitor/access',
+        component: () => import('@/views/riskMonitor/access/index'),
+        name: 'access',
+        meta: { title: '访问控制管理', icon: 'icon', noCache: true}
       }
     ]
   },
