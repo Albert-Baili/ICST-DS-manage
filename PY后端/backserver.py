@@ -162,7 +162,7 @@ def handle_hash_tuomintest(token_payload):
 
 #数据库扫描
 
-@app.route('/get_sql_data', methods=['GET'])
+@app.route('/api/sql_scan/get_sql_data', methods=['GET'])
 def get_sqldDB_data():
     response = get_database_summary()
     return jsonify(response)
