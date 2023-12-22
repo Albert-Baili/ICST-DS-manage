@@ -12,6 +12,8 @@ def create_db_table():
             database_version TEXT,
             database_type TEXT,
             database_name TEXT,
+            grants_info TEXT,
+            database_size REAL,
             table_info TEXT
         )
     ''')
@@ -22,14 +24,17 @@ def insert_data_into_table(json_data):
     conn = sqlite3.connect(db_file)
     cursor = conn.cursor()
 
-    for db_name, db_tables in json_data['databases'].items():
-        # 将表信息转换为JSON字符串
-        table_info_json = json.dumps(db_tables)
+    grants_info_json = json.dumps(json_data['grants'])
+
+
+    for db_name, db_content in json_data['databases'].items():
+        table_info_json = json.dumps(db_content.get('table', {}))
+        db_size = db_content.get('size')
         cursor.execute('''
             INSERT INTO database_summary (
-                database_version, database_type, database_name, table_info
-            ) VALUES (?, ?, ?, ?)
-        ''', (json_data['version'], json_data['type'], db_name, table_info_json))
+                database_version, database_type, database_name, grants_info, database_size, table_info
+            ) VALUES (?, ?, ?, ?, ?, ?)
+        ''', (json_data['version'], json_data['type'], db_name, grants_info_json, db_size, table_info_json))
 
     conn.commit()
     conn.close()
@@ -51,13 +56,15 @@ def get_database_summary():
     rows = cursor.fetchall()
     conn.close()
 
-    # 将每行的table_info从字符串转换为JSON对象
+    # 将每行的数据转换为字典，并处理JSON字段
     data = [{
         "id": row[0],
         "database_version": row[1],
         "database_type": row[2],
         "database_name": row[3],
-        "table_info": json.loads(row[4])  # 将字符串转换为JSON
+        "grants_info": json.loads(row[4]),  # 将字符串转换为JSON
+        "database_size": row[5],
+        "table_info": json.loads(row[6])   # 将字符串转换为JSON
     } for row in rows]
 
     response_data = {
