@@ -3,6 +3,8 @@ from Cryptodome.Util.Padding import pad, unpad
 from Cryptodome.Random import get_random_bytes
 import base64
 
+from gmssl import sm4, func
+
 def des_encrypt(key, data, mode, padding='PKCS5Padding', iv=None):
     """
     使用DES算法加密数据。
@@ -84,9 +86,51 @@ key = b'12345678'  # 8字节密钥
 iv = get_random_bytes(8)  # 8字节IV
 data = "testdata"
 
-encrypted_data = des_encrypt(key, data, mode='ECB', padding='PKCS5Padding', iv=iv)
+def sm4_encrypt(key, data):
+    """
+    使用SM4算法加密数据
+    :param key: 16字节的密钥
+    :param data: 要加密的数据
+    :return: 加密后的数据
+    """
+    crypt_sm4 = sm4.CryptSM4()
+    crypt_sm4.set_key(key.encode(), sm4.SM4_ENCRYPT)
+    encrypted_data = crypt_sm4.crypt_ecb(data.encode())  # ECB模式
+    return func.bytes_to_list(encrypted_data)
 
-decrypted_data = des_decrypt(key, encrypted_data, mode='ECB', padding='PKCS5Padding', iv=iv)
+def sm4_sensitive_data_masking(key, sensitive_data):
+    """
+    对敏感数据进行脱敏处理
+    :param key: 16字节的密钥
+    :param sensitive_data: 需要脱敏的敏感数据
+    :return: 脱敏后的数据
+    """
+    return sm4_encrypt(key, sensitive_data)
 
-print(encrypted_data, decrypted_data)
+# 示例
+key = "0123456789abcdef"  # 密钥
+data = "Sensitive Information"  # 敏感信息
+masked_data = sm4_sensitive_data_masking(key, data)
+print(masked_data)
+
+def sm4_decrypt(key, encrypted_data):
+    """
+    使用SM4算法解密数据
+    :param key: 16字节的密钥
+    :param encrypted_data: 加密过的数据
+    :return: 解密后的数据
+    """
+    crypt_sm4 = sm4.CryptSM4()
+    crypt_sm4.set_key(key.encode(), sm4.SM4_DECRYPT)
+    decrypted_data = crypt_sm4.crypt_ecb(func.list_to_bytes(encrypted_data))  # ECB模式
+    return decrypted_data.decode()
+
+decrypted_data = sm4_decrypt(key, masked_data)
+print(decrypted_data)
+
+# encrypted_data = des_encrypt(key, data, mode='ECB', padding='PKCS5Padding', iv=iv)
+
+# decrypted_data = des_decrypt(key, encrypted_data, mode='ECB', padding='PKCS5Padding', iv=iv)
+
+# print(encrypted_data, decrypted_data)
 
