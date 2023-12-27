@@ -26,7 +26,9 @@ from sqlManage import create_database,read_certificate_file,query_certificates,q
 #脱敏测试模块
 from tuominTest.desensitizeYangai import handle_yangai_request
 from tuominTest.desensitizeHash import handle_Hash_request
-from tuominTest.desensitizeJiami import des_encrypt_api
+from tuominTest.desensitizeJiami import des_encrypt_api,aes_encrypt_api
+from tuominTest.desensitizeSM4 import sm4_encrypt_api
+
 
 #数据库扫描模块
 from sqlsacnDatabase import get_database_summary
@@ -162,9 +164,24 @@ def handle_hash_tuomintest(token_payload):
     return jsonify(response)
 
 @app.route('/api/sendDesensiTest/des',methods=['POST'])
-def handle_des_tuomintest():
+def handle_jiami_tuomintest():
     data = request.json
-    response = des_encrypt_api(data)
+    enc_rule = data.get('encRule')
+    if enc_rule == '1':
+        # 调用SM4加密函数
+         response =sm4_encrypt_api(data)
+    elif enc_rule == '2':
+        # 调用DES加密函数
+        response = des_encrypt_api(data)
+    elif enc_rule == '3':
+        # 调用DES加密函数
+        response = aes_encrypt_api(data)
+    else:
+        # 未知的加密规则
+        response= {
+            'code': 20000,
+            'data': {'result': 'Error, unknown encryption rule.'}
+        }
     return jsonify(response)
 
 #数据库扫描
