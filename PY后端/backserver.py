@@ -26,6 +26,7 @@ from sqlManage import create_database,read_certificate_file,query_certificates,q
 #脱敏测试模块
 from tuominTest.desensitizeYangai import handle_yangai_request
 from tuominTest.desensitizeHash import handle_Hash_request
+from tuominTest.desensitizeJiami import des_encrypt_api
 
 #数据库扫描模块
 from sqlsacnDatabase import get_database_summary
@@ -158,6 +159,12 @@ def handle_yangai_tuomintest(token_payload):
 def handle_hash_tuomintest(token_payload):
     data = request.json
     response = handle_Hash_request(data)
+    return jsonify(response)
+
+@app.route('/api/sendDesensiTest/des',methods=['POST'])
+def handle_des_tuomintest():
+    data = request.json
+    response = des_encrypt_api(data)
     return jsonify(response)
 
 #数据库扫描
