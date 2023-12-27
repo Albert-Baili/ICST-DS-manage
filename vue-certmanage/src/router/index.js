@@ -16,7 +16,7 @@ import Layout from '@/layout'
  *                                if not set alwaysShow, when item has more than one children route,
  *                                it will becomes nested mode, otherwise not show the root menu
  * redirect: noRedirect           if set noRedirect will no redirect in the breadcrumb
- * name:'router-name'           
+ * name:'router-name'
  *     the name is used by <keep-alive> (must set!!!)
  * meta : {
     roles: ['admin','editor']    control the page roles (you can set multiple roles)
@@ -74,8 +74,8 @@ export const constantRoutes = [
       {
         path: 'dashboard',
         component: () => import('@/views/dashboard/index'),
-        name: '主页',
-        meta: { title: '主页', icon: 'dashboard', affix: true }
+        name: '大屏',
+        meta: { title: '大屏', icon: 'dashboard', affix: true }
       }
     ]
   },
@@ -92,8 +92,8 @@ export const constantRoutes = [
         meta: { title: 'Profile', icon: 'user', noCache: true }
       }
     ]
-  },
-  
+  }
+
 ]
 
 /**
@@ -181,13 +181,26 @@ export const asyncRoutes = [
         path: '/riskMonitor/trans',
         component: () => import('@/views/riskMonitor/trans/index'),
         name: 'trans',
-        meta: { title: '数据传输加密', icon: 'icon', noCache: true}
+        meta: { title: '数据传输加密', icon: 'icon', noCache: true }
       },
       {
         path: '/riskMonitor/access',
         component: () => import('@/views/riskMonitor/access/index'),
         name: 'access',
-        meta: { title: '访问控制管理', icon: 'icon', noCache: true}
+        meta: { title: '访问控制管理', icon: 'icon', noCache: true }
+      }
+    ]
+  },
+  {
+    path: '/',
+    component: Layout,
+    redirect: '/sysmanage',
+    children: [
+      {
+        path: 'sysmanage',
+        component: () => import('@/views/sysmanage/index'),
+        name: '系统管理',
+        meta: { title: '系统管理', icon: 'dashboard', affix: true }
       }
     ]
   },
@@ -251,8 +264,6 @@ export const asyncRoutes = [
   // chartsRouter,
 
   // tableRouter,
-
-  
 
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
