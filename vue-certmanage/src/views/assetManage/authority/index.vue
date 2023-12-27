@@ -1,41 +1,55 @@
 <template>
-    <div style="padding:30px;">
-        <div>
-            <el-table :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
-                style="width: 100%">
-                <el-table-column label="资产名称" prop="asset_name" />
-                <el-table-column label="资产类型" prop="asset_type" />
-                <el-table-column label="所在地区" prop="location" />
-                <el-table-column label="创建日期" prop="创建日期" />
-                <el-table-column label="总数据量" prop="amount" />
-                <el-table-column label="连接状态">
-                    <template slot-scope="scope">
-                        <el-switch v-model="scope.row.status" active-color="#13ce66" inactive-color="#ff4949"
-                            active-value="1" inactive-value="0" />
-                    </template>
-                </el-table-column>
-                <el-table-column label="功能状态" prop="function" />
-                <el-table-column label="操作">
-                    <template slot-scope="scope">
-                        <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                        <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-                    </template>
-                </el-table-column>
-                <el-table-column>
-                    <template slot="header" slot-scope="scope">
-                        <el-input v-model="search" style="width:80%" size="medium" placeholder="输入关键字搜索" />
-                    </template>
-                </el-table-column>
-            </el-table>
-            <div class="block">
-                <el-pagination :current-page="currentPage" :page-sizes="[5, 10, 20, 30, 40]" :page-size="pageSize"
-                    layout="sizes, prev, pager, next" :prev-text="'上一页'" :next-text="'下一页'" @size-change="handleSizeChange"
-                    @current-change="handlePageChange"> </el-pagination>
-            </div>
-        </div>
+  <div style="padding:30px;">
+    <div>
+      <el-table
+        :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
+        style="width: 100%"
+      >
+        <el-table-column label="资产名称" prop="asset_name" />
+        <el-table-column label="资产类型" prop="asset_type" />
+        <el-table-column label="所在地区" prop="location" />
+        <el-table-column label="创建日期" prop="创建日期" />
+        <el-table-column label="总数据量" prop="amount" />
+        <el-table-column label="连接状态">
+          <template slot-scope="scope">
+            <el-switch
+              v-model="scope.row.status"
+              active-color="#13ce66"
+              inactive-color="#ff4949"
+              active-value="1"
+              inactive-value="0"
+            />
+          </template>
+        </el-table-column>
+        <el-table-column label="功能状态" prop="function" />
+        <el-table-column label="操作">
+          <template slot-scope="scope">
+            <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+            <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+          </template>
+        </el-table-column>
+        <el-table-column>
+          <template slot="header" slot-scope="scope">
+            <el-input v-model="search" style="width:80%" size="medium" placeholder="输入关键字搜索" />
+          </template>
+        </el-table-column>
+      </el-table>
+      <div class="block">
+        <el-pagination
+          :current-page="currentPage"
+          :page-sizes="[5, 10, 20, 30, 40]"
+          :page-size="pageSize"
+          layout="sizes, prev, pager, next"
+          :prev-text="'上一页'"
+          :next-text="'下一页'"
+          @size-change="handleSizeChange"
+          @current-change="handlePageChange"
+        />
+      </div>
     </div>
+  </div>
 </template>
-  
+
 <script>
 import { sendDesensiTest_yangai, sendDesensiTest_hash } from '@/api/desensiTest'
 
@@ -89,9 +103,9 @@ export default {
         amount: '58.89MB',
         status: '0',
         function: '只读'
-      },
-    ],
-      search: '',
+      }
+      ],
+      search: ''
     }
   },
   methods: {
@@ -109,7 +123,7 @@ export default {
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`)
-    },
+    }
   }
 }
 </script>

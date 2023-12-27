@@ -75,8 +75,32 @@
                   <el-option label="AES" value="3" />
                 </el-select>
               </el-form-item>
+              <el-form-item label="密钥">
+                <el-input v-model="encform.key" />
+              </el-form-item>
+              <el-form-item label="加密模式">
+                <el-select v-model="encform.mode" placeholder="请选择加密模式">
+                  <el-option label="ECB" value="ECB" />
+                  <el-option label="CBC" value="CBC" />
+                  <el-option label="CFB" value="CFB" />
+                  <el-option label="CTR" value="CTR" />
+                  <el-option label="OFB" value="OFB" />
+                </el-select>
+              </el-form-item>
+              <el-form-item label="填充">
+                <el-select v-model="encform.padding" placeholder="请选择填充算法">
+                  <el-option label="PKCS5Padding" value="PKCS5Padding" />
+                  <el-option label="PKCS7Padding" value="PKCS7Padding" />
+                </el-select>
+              </el-form-item>
+              <el-form-item label="输出格式">
+                <el-select v-model="encform.output_format" placeholder="请选择输出格式">
+                  <el-option label="base64" value="base64" />
+                  <el-option label="hex" value="hex" />
+                </el-select>
+              </el-form-item>
               <el-form-item label="原始数据">
-                <el-input v-model="encform.origindata" type="textarea" rows="3" />
+                <el-input v-model="encform.data" type="textarea" rows="3" />
               </el-form-item>
               <el-form-item>
                 <el-button type="primary" @click="encSubmit">测试</el-button>
@@ -130,7 +154,7 @@
 </template>
 
 <script>
-import { sendDesensiTest_yangai, sendDesensiTest_hash } from '@/api/desensiTest'
+import { sendDesensiTest_yangai, sendDesensiTest_hash, sendDesensiTest_enc } from '@/api/desensiTest'
 
 export default {
   data() {
@@ -253,6 +277,16 @@ export default {
         this.hashform.tuodata = response.data.result
       })
         .catch(error => {
+          // 处理请求失败的错误信息
+          console.error(error)
+        })
+    },
+    encSubmit() {
+      sendDesensiTest_enc(this.encform).then(response => {
+        console.log(response)
+        this.encform.tuodata = response.data.result
+      })
+      .catch(error => {
           // 处理请求失败的错误信息
           console.error(error)
         })

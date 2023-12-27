@@ -18,3 +18,11 @@ import request from '@/utils/request'
     })
   }
   
+
+  export function sendDesensiTest_enc(data) {
+    return request({
+      url: '/api/sendDesensiTest/des',
+      method: 'post',
+      data
+    })
+  }
