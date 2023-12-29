@@ -175,16 +175,6 @@ export default {
         beforeRemove(file, fileList) {
             return this.$confirm(`确定移除 ${file.name}？`);
         },
-        fetchData() {
-            getalltunnel().then(response => {
-                this.tunnels = JSON.parse(response.data);
-                this.totalItems = this.tunnels.length;
-            })
-                .catch(error => {
-                    // 处理请求失败的错误信息
-                    console.error(error);
-                });
-        },
         handleSizeChange(val) {
             console.log(val)
             this.pageSize = val;
@@ -199,6 +189,14 @@ export default {
             this.centerDialogVisible = true
         },
         fetchData() {
+            getalltunnel().then(response => {
+                this.tunnels = JSON.parse(response.data);
+                this.totalItems = this.tunnels.length;
+            })
+                .catch(error => {
+                    // 处理请求失败的错误信息
+                    console.error(error);
+                });
             getallcert().then(response => {
                 this.certificates = JSON.parse(response.data)
                 this.totalItems = this.certificates.length

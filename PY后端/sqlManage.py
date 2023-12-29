@@ -84,6 +84,7 @@ def insert_tunnel_data(tunnel_data):
               (tunnel_data['tunnel_name'], tunnel_data['remote_server_ip'], 
                tunnel_data['remote_server_port'], tunnel_data['status'], 
                tunnel_data['certificate_id']))
+    print("1111111插入隧道")
 
     conn.commit()
     conn.close()

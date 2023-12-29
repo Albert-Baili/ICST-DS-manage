@@ -57,9 +57,10 @@ def serve_app2(path):
     else:
         return send_from_directory('dist-dashboard', 'index.html')
 
-@app.route('/')
-def index():
-    # 访问根URL时加载哪个应用
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def catch_all(path):
+    # 重定向所有其他请求到 Vue 应用的 index.html
     return send_from_directory('dist-dashboard', 'index.html')
 
 #大屏模块
