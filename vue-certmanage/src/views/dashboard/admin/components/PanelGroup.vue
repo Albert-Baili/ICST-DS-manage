@@ -65,11 +65,11 @@ export default {
   },
   data() {
     return {
-      localIP: "127.0.0.1",
-    };
+      localIP: '127.0.0.1'
+    }
   },
   created() {
-    this.getLocalIP();
+    this.getLocalIP()
   },
   methods: {
     handleSetLineChartData(type) {
@@ -77,14 +77,14 @@ export default {
     },
     getLocalIP() {
       get_local_ip().then(response => {
-        this.localIP = response.data;
+        this.localIP = response.data
         console.log(this.localIP)
       })
         .catch(error => {
           // 处理请求失败的错误信息
-          console.error(error);
-        });
-    },
+          console.error(error)
+        })
+    }
   }
 }
 </script>
