@@ -2,7 +2,7 @@
   <div style="padding:30px;">
     <el-tabs v-model="activeName" @tab-click="handleClick">
       <el-tab-pane label="敏感数据识别模板" name="first">
-        <el-col :span="4" style="padding-right: 5%;padding-top:1%">
+        <el-col :span="5" style="padding-right: 5%;padding-top:1%">
           <span>ICST数据安全分级分类模板</span>
           <el-divider />
           <el-tree
@@ -15,7 +15,7 @@
             :props="defaultProps"
           />
         </el-col>
-        <el-col :span="20" style="padding-top:1%">
+        <el-col :span="19" style="padding-top:1%">
           <el-row>
             <el-button type="primary">新建规则</el-button>
             <el-button type="primary">批量删除</el-button>
@@ -197,7 +197,7 @@ export default {
         date: '2023-11-24',
         describe: '加解密密钥'
       }],
-      activeName: 'second',
+      activeName: 'first',
       currentPage: 1,
       search: ''
     }
