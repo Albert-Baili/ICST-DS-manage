@@ -61,8 +61,8 @@
             <span style="display: grid;padding-top: 5%;padding-left: 10%;">MySQL</span>
           </el-col>
           <el-col :span="6">
-            <span style="font-size: larger;">camanage</span>
-            <span style="display: grid;">ID:001</span>
+            <span style="font-size: larger;">keyManage</span>
+            <span style="display: grid;">ID:002</span>
             <el-button type="text" @click="table = true">详情</el-button>
             <el-drawer :visible.sync="table" direction="rtl" size="50%">
               <el-col>
@@ -114,8 +114,8 @@
             <span style="display: grid;padding-top: 5%;padding-left: 10%;">MySQL</span>
           </el-col>
           <el-col :span="6">
-            <span style="font-size: larger;">camanage</span>
-            <span style="display: grid;">ID:001</span>
+            <span style="font-size: larger;">systemLog</span>
+            <span style="display: grid;">ID:003</span>
             <el-button type="text" @click="table = true">详情</el-button>
             <el-drawer :visible.sync="table" direction="rtl" size="50%">
               <el-col>
@@ -167,8 +167,8 @@
             <span style="display: grid;padding-top: 5%;padding-left: 10%;">MySQL</span>
           </el-col>
           <el-col :span="6">
-            <span style="font-size: larger;">camanage</span>
-            <span style="display: grid;">ID:001</span>
+            <span style="font-size: larger;">desensiData</span>
+            <span style="display: grid;">ID:004</span>
             <el-button type="text" @click="table = true">详情</el-button>
             <el-drawer :visible.sync="table" direction="rtl" size="50%">
               <el-col>
