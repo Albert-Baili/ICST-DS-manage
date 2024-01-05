@@ -39,7 +39,7 @@
                 <el-descriptions-item label="分类">
                   <el-button type="primary" icon="el-icon-edit" size="small" />
                 </el-descriptions-item>
-                <el-descriptions-item label="密级">
+                <el-descriptions-item label="分级">
                   <el-button type="primary" icon="el-icon-edit" size="small" />
                 </el-descriptions-item>
               </el-descriptions>
@@ -92,7 +92,7 @@
                 <el-descriptions-item label="分类">
                   <el-button type="primary" icon="el-icon-edit" size="small" />
                 </el-descriptions-item>
-                <el-descriptions-item label="密级">
+                <el-descriptions-item label="分级">
                   <el-button type="primary" icon="el-icon-edit" size="small" />
                 </el-descriptions-item>
               </el-descriptions>
@@ -145,7 +145,7 @@
                 <el-descriptions-item label="分类">
                   <el-button type="primary" icon="el-icon-edit" size="small" />
                 </el-descriptions-item>
-                <el-descriptions-item label="密级">
+                <el-descriptions-item label="分级">
                   <el-button type="primary" icon="el-icon-edit" size="small" />
                 </el-descriptions-item>
               </el-descriptions>
@@ -198,7 +198,7 @@
                 <el-descriptions-item label="分类">
                   <el-button type="primary" icon="el-icon-edit" size="small" />
                 </el-descriptions-item>
-                <el-descriptions-item label="密级">
+                <el-descriptions-item label="分级">
                   <el-button type="primary" icon="el-icon-edit" size="small" />
                 </el-descriptions-item>
               </el-descriptions>
